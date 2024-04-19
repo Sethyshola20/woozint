@@ -1,5 +1,8 @@
+"use client"
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -38,7 +41,9 @@ export default function Home() {
           priority
         />
       </div>
-
+<Link href="/haveibeenpawned">
+  HaveIBeenPawned
+  </Link>
       <div className={styles.grid}>
         <a
           href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
