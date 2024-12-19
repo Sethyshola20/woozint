@@ -32,18 +32,11 @@ export default function Home() {
       </div>
 
       <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-<Link href="/haveibeenpawned">
-  HaveIBeenPawned
+      <Link href="/haveibeenpawned">
+  <h1>HaveIBeenPawned</h1>
   </Link>
+      </div>
+
       <div className={styles.grid}>
         <a
           href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
