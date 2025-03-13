@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 656.99 299.89">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #21264d;
+      }
+
+      .cls-3 {
+        font-family: ArialMT, Arial;
+        font-size: 97.49px;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="cls-2" d="M66.49,155.63c-1.6,16.81-17.76,29.25-36.08,27.78S-1.47,167.12.13,150.31c1.6-16.81,17.76-29.25,36.08-27.78,18.33,1.47,31.88,16.29,30.28,33.11Z"/>
+    <polygon class="cls-2" points="137.98 219.16 86.99 258.28 7.53 172.34 58.52 133.22 137.98 219.16"/>
+    <path class="cls-2" d="M144.31,240.05c-1.62,16.99-17.91,29.56-36.39,28.07-18.48-1.48-32.16-16.46-30.54-33.45,1.62-16.99,17.91-29.56,36.39-28.07,18.48,1.48,32.16,16.46,30.54,33.45Z"/>
+    <rect class="cls-2" x="156.77" y="108.8" width="66.66" height="125.68"/>
+    <ellipse class="cls-2" cx="190.09" cy="108.8" rx="33.33" ry="30.88"/>
+    <polygon class="cls-2" points="211.69 258.12 162.33 217.33 369.31 10.04 418.66 50.84 211.69 258.12"/>
+    <ellipse class="cls-2" cx="393.66" cy="30.84" rx="30.84" ry="32.72" transform="translate(348.74 423.15) rotate(-87.95)"/>
+    <ellipse class="cls-2" cx="190.88" cy="231.6" rx="34.11" ry="33.55"/>
+  </g>
+  <text class="cls-3" transform="translate(267.84 268.24) scale(1.06 1)"><tspan x="0" y="0">OOZIN</tspan><tspan class="cls-1" x="308.69" y="0">T</tspan></text>
+</svg>
