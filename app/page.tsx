@@ -1,93 +1,156 @@
-"use client"
+"use client";
 
-import Image from "next/image";
-import styles from "./page.module.css";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./components/ui/form";
+import { Input } from "./components/ui/input";
+import { useForm } from "react-hook-form";
+import { Button } from "./components/ui/button";
+import { toast } from "./components/hooks/use-toast";
+import { Toaster } from "./components/ui/toaster";
+import { FormDataType, formSchema } from "./zodValidation";
+import { Card, CardContent } from "./components/ui/card";
+import { useTheme } from "next-themes";
 import Link from "next/link";
+import { formAction } from "./_action";
+import { ModeToggle, SearchTypeToggle } from "@components/ui/toggle-theme";
+import { useState } from "react";
 
 export default function Home() {
+  const [searchByEmail, setSearchByEmail] = useState(true);
+  const [person, setPerson] = useState<
+    | {
+        email: string;
+        name: string;
+        id: string;
+        geolocCreateMail: string;
+        dateCreateMail: Date;
+        passwordMzailleaked: string;
+        x: string;
+        facebook: string;
+        linkedin: string;
+        instagram: string;
+      }
+    | undefined
+  >(undefined);
+  const { theme } = useTheme();
+
+  async function sendData(data: FormDataType) {
+    try {
+      const person = await formAction(data);
+    } catch (error: unknown) {
+      toast({
+        title: "Erreur",
+        description:
+          error instanceof Error ? error.message : "Une erreur est survenue",
+        variant: "destructive",
+      });
+    }
+  }
+  const form = useForm<FormDataType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      nom: "",
+      prenom: "",
+      email: "",
+    },
+  });
+  const { isSubmitting } = form.formState;
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <main className="h-full flex flex-col items-center justify-center">
+      <nav className="flex w-full justify-between items-center p-6">
+        <ModeToggle />
+        <SearchTypeToggle setSearchByEmail={setSearchByEmail} />
+      </nav>
+      <Card>
+        <CardContent className="w-[50vw] p-6">
+          <Form {...form}>
+            <form className="space-y-6" onSubmit={form.handleSubmit(sendData)}>
+              {searchByEmail ? (
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Votre adresse email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} type="email" />
+                      </FormControl>
 
-      <div className={styles.center}>
-      <Link href="/haveibeenpawned">
-  <h1>HaveIBeenPawned</h1>
-  </Link>
-      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="prenom"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Prénom</FormLabel>
+                        <FormControl>
+                          <Input placeholder="" {...field} type="email" />
+                        </FormControl>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="nom"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nom</FormLabel>
+                        <FormControl>
+                          <Input placeholder="" {...field} type="email" />
+                        </FormControl>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
+              <Button
+                variant="outline"
+                type="submit"
+                className={
+                  theme === "light"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
+                }
+              >
+                {isSubmitting ? "Recherche..." : "Rechercher"}
+              </Button>
+            </form>
+          </Form>
+          <Toaster />
+        </CardContent>
+      </Card>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      {person && (
+        <Card>
+          <CardContent className="w-[50vw] p-6">
+            <h1>{person.name}</h1>
+            <p>{person.email}</p>
+            <p>{person.geolocCreateMail}</p>
+            <p>{person.passwordMzailleaked}</p>
+            <p>{person.x}</p>
+            <p>{person.facebook}</p>
+            <p>{person.linkedin}</p>
+            <p>{person.instagram}</p>
+          </CardContent>
+        </Card>
+      )}
     </main>
   );
 }

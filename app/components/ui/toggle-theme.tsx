@@ -38,3 +38,27 @@ export function ModeToggle() {
     </DropdownMenu>
   );
 }
+
+export function SearchTypeToggle({
+  setSearchByEmail,
+}: {
+  setSearchByEmail: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className="absolute right-10">
+        <Button variant="outline" size="icon">
+          <span className="sr-only">Type de recherche</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setSearchByEmail(true)}>
+          Email
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setSearchByEmail(false)}>
+          Prenom et Nom
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

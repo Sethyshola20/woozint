@@ -9,7 +9,54 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  role     String
+
+  @@map("users")
+}
+
+model Person {
+  id                  String    @id @default(uuid())
+  name                String
+  email               String    @unique
+  geolocCreateMail    String
+  dateCreateMail      DateTime
+  passwordMzailleaked String
+  x                   String
+  facebook            String
+  linkedin            String
+  instagram           String
+  commentgooggle      Comment[]
+  articles            Article[]
+
+  @@map("persons")
+}
+
+model Comment {
+  id             String  @id @default(uuid())
+  enterpriseName String?
+  comment        String?
+  titre          String?
+  description    String?
+  person         Person  @relation(fields: [personId], references: [id])
+  personId       String
+
+  @@map("comments")
+}
+
+model Article {
+  id          String @id @default(uuid())
+  titre       String
+  description String
+  person      Person @relation(fields: [personId], references: [id])
+  personId    String
+
+  @@map("articles")
 }

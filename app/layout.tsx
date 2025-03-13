@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.scss";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "Woozint",
@@ -27,7 +25,14 @@ export default function RootLayout({
           href="/woozint_logo.svg"
         ></link>
       </head>
-      <body className={inter.className}>{children}</body>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <body className="h-[100vh]">{children}</body>
+      </ThemeProvider>
     </html>
   );
 }

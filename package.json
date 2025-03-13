@@ -8,10 +8,13 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
-    "@next/swc-darwin-arm64": "^15.2.2",
-    "prisma": "^6.5.0",
     "@hookform/resolvers": "^4.1.2",
+    "@next/swc-darwin-arm64": "^15.2.2",
+    "@prisma/client": "^6.5.0",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
@@ -34,6 +37,7 @@
     "next": "^15.2.0",
     "next-themes": "^0.4.4",
     "postcss": "^8.5.3",
+    "prisma": "^6.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
@@ -50,9 +54,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
+    "eslint-config-next": "14.2.1",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^13.0.1",
-    "typescript": "5.7.3",
-    "eslint-config-next": "14.2.1"
+    "ts-node": "^10.9.2",
+    "typescript": "5.7.3"
   }
 }
