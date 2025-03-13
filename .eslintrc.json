@@ -1,8 +1,14 @@
 {
+  "parser": "@typescript-eslint/parser",
   "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "next",
     "next/core-web-vitals"
-  ],"rules": {
+  ],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
     "@next/next/no-duplicate-head": "off"
   }
 }

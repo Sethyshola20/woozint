@@ -31,6 +31,7 @@ export default function Home() {
 
   async function sendData(data: FormDataType) {
     try {
+      console.log("sent data", data);
       const person = await formAction(data);
       setPerson(person);
     } catch (error: unknown) {
@@ -85,7 +86,7 @@ export default function Home() {
                       <FormItem>
                         <FormLabel>Prénom</FormLabel>
                         <FormControl>
-                          <Input placeholder="" {...field} type="email" />
+                          <Input placeholder="" {...field} type="text" />
                         </FormControl>
 
                         <FormMessage />
@@ -99,7 +100,7 @@ export default function Home() {
                       <FormItem>
                         <FormLabel>Nom</FormLabel>
                         <FormControl>
-                          <Input placeholder="" {...field} type="email" />
+                          <Input placeholder="" {...field} type="text" />
                         </FormControl>
 
                         <FormMessage />
