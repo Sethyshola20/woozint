@@ -1,155 +1,100 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./components/ui/form";
-import { Input } from "./components/ui/input";
-import { useForm } from "react-hook-form";
 import { Button } from "./components/ui/button";
-import { toast } from "./components/hooks/use-toast";
-import { Toaster } from "./components/ui/toaster";
-import { FormDataType, formSchema } from "./zodValidation";
-import { Card, CardContent } from "./components/ui/card";
-import { useTheme } from "next-themes";
 import Link from "next/link";
-import { formAction, PersonWithComment } from "./_action";
-import { ModeToggle, SearchTypeToggle } from "@components/ui/toggle-theme";
-import { useState } from "react";
+import { ModeToggle } from "@components/ui/toggle-theme";
 
-export default function Home() {
-  const [searchByEmail, setSearchByEmail] = useState(true);
-  const [person, setPerson] = useState<PersonWithComment | undefined>(
-    undefined
-  );
-  const { theme } = useTheme();
-
-  async function sendData(data: FormDataType) {
-    try {
-      console.log("sent data", data);
-      const person = await formAction(data);
-      setPerson(person);
-    } catch (error: unknown) {
-      toast({
-        title: "Erreur",
-        description:
-          error instanceof Error ? error.message : "Une erreur est survenue",
-        variant: "destructive",
-      });
-    }
-  }
-  const form = useForm<FormDataType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      nom: "",
-      prenom: "",
-      email: "",
-    },
-  });
-  const { isSubmitting } = form.formState;
+export default function LandingPage() {
   return (
-    <main className="h-full flex flex-col items-center justify-center">
-      <nav className="flex w-full justify-between items-center p-6">
-        <ModeToggle />
-        <SearchTypeToggle setSearchByEmail={setSearchByEmail} />
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+      <nav className="flex justify-between items-center p-6 backdrop-blur-sm border-b">
+        <div className="flex-1 flex items-center gap-4">
+          <h1 className="text-2xl font-bold">
+            WoozInt
+          </h1>
+          <ModeToggle />
+        </div>
+
+        <div className="flex-1 flex justify-end gap-4">
+          <Button
+            asChild
+            variant="outline"
+            className="hover:border-primary transition-colors"
+          >
+            <Link href="/login">Se connecter</Link>
+          </Button>
+
+          <Button
+            asChild
+            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300"
+          >
+            <Link href="/register">S&apos;inscrire</Link>
+          </Button>
+        </div>
       </nav>
-      <Card>
-        <CardContent className="w-[50vw] p-6">
-          <Form {...form}>
-            <form className="space-y-6" onSubmit={form.handleSubmit(sendData)}>
-              {searchByEmail ? (
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Votre adresse email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="" {...field} type="email" />
-                      </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="prenom"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Prénom</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} type="text" />
-                        </FormControl>
+      <main className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto text-center space-y-12">
+          <div className="space-y-4 animate-fade-in">
+            <h2 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
+              Découvrez votre empreinte numérique
+            </h2>
 
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="nom"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nom</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} type="text" />
-                        </FormControl>
+            <p className="text-xl text-muted-foreground">
+              WoozInt vous aide à comprendre quelles informations personnelles
+              sont disponibles publiquement sur internet.
+            </p>
+          </div>
 
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
+          <div className="grid gap-8 md:grid-cols-3 py-12">
+            <div className="space-y-4 p-6 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors duration-300 hover:shadow-lg">
+              <h3 className="text-xl font-semibold text-primary">
+                Données Sociales
+              </h3>
+              <p className="text-muted-foreground">
+                Retrouvez vos profils sur les réseaux sociaux et les
+                informations publiques associées.
+              </p>
+            </div>
+            <div className="space-y-4 p-6 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors duration-300 hover:shadow-lg">
+              <h3 className="text-xl font-semibold text-primary">
+                Fuites de Données
+              </h3>
+              <p className="text-muted-foreground">
+                Vérifiez si vos informations ont été compromises dans des fuites
+                de données.
+              </p>
+            </div>
+            <div className="space-y-4 p-6 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors duration-300 hover:shadow-lg">
+              <h3 className="text-xl font-semibold text-primary">
+                Présence en Ligne
+              </h3>
+              <p className="text-muted-foreground">
+                Analysez votre visibilité sur internet et les commentaires
+                associés à votre nom.
+              </p>
+            </div>
+          </div>
 
+          <div className="space-y-6 p-8 rounded-2xl bg-gradient-to-br from-card/80 to-background border">
+            <h3 className="text-3xl font-semibold text-primary">
+              Prenez le contrôle de vos données personnelles
+            </h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              En comprenant votre présence en ligne, vous pouvez mieux protéger
+              votre vie privée et gérer votre réputation numérique.
+            </p>
+            <Link href="/register">
               <Button
-                variant="outline"
-                type="submit"
-                className={
-                  theme === "light"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                }
+                size="lg"
+                className="mt-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300"
               >
-                {isSubmitting ? "Recherche..." : "Rechercher"}
+                Commencer maintenant
               </Button>
-            </form>
-          </Form>
-          <Toaster />
-        </CardContent>
-      </Card>
-
-      {person && (
-        <Card>
-          <CardContent className="w-[50vw] p-6">
-            <h1>{person.name}</h1>
-            <p>{person.email}</p>
-            <p>{person.geolocCreateMail}</p>
-            <p>{person.passwordMzailleaked}</p>
-            <p>{person.x}</p>
-            <p>{person.facebook}</p>
-            <p>{person.linkedin}</p>
-            <p>{person.instagram}</p>
-            <ul>
-              {person.commentgooggle.map((comment) => (
-                <li key={comment.id}>
-                  <h2>{comment.titre}</h2>
-                  <p>{comment.description}</p>
-                  <p>{comment.enterpriseName}</p>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
-    </main>
+            </Link>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }

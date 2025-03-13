@@ -14,29 +14,33 @@ import {
 import { Input } from "@components/ui/input";
 import { toast } from "@components/hooks/use-toast";
 import { useTheme } from "next-themes";
-import { LoginFormData, loginFormSchema } from "zodValidation";
+import { RegisterFormData, registerFormSchema } from "zodValidation";
+import { registerAction } from "../_action";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const { theme } = useTheme();
-  const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginFormSchema),
+  const router = useRouter();
+  const form = useForm<RegisterFormData>({
+    resolver: zodResolver(registerFormSchema),
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
   const { isSubmitting } = form.formState;
 
-  async function onSubmit(values: LoginFormData) {
+  async function onSubmit(values: RegisterFormData) {
     try {
-      // Add your login logic here
-      console.log(values);
+      await registerAction(values);
       toast({
         title: "Succès",
-        description: "Connexion réussie",
+        description: "Compte créé avec succès",
       });
-    } catch (error: unknown) {
+      router.push("/dashboard");
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Erreur",
@@ -50,9 +54,9 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 rounded-lg border p-6 shadow-lg">
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold">Bienvenue</h1>
+          <h1 className="text-2xl font-bold">Créer un compte</h1>
           <p className="text-muted-foreground">
-            Entrez vos identifiants pour accéder à votre compte
+            Entrez vos informations pour créer votre compte
           </p>
         </div>
 
@@ -63,7 +67,7 @@ export default function LoginPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Adresse e-mail</FormLabel>
                   <FormControl>
                     <Input type="email" {...field} />
                   </FormControl>
@@ -77,7 +81,21 @@ export default function LoginPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Mot de passe</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirmer le mot de passe</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -95,12 +113,13 @@ export default function LoginPage() {
               }
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Connexion..." : "Se connecter"}
+              {isSubmitting ? "Création..." : "Créer un compte"}
             </Button>
+
             <p className="text-center text-sm">
               Déjà un compte?{" "}
-              <Link href="/register" className="text-blue-500 hover:underline">
-                S&apos;inscrire
+              <Link href="/login" className="text-blue-500 hover:underline">
+                Se connecter
               </Link>
             </p>
           </form>

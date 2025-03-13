@@ -1,38 +1,43 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.scss";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@components/ui/toaster";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Woozint",
-  description: "Have you been pawned ?",
+  title: "WoozInt",
+  description: "OSINT Tool",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="Logspace" content="logspace"></meta>
-        <link
-          rel="icon"
-          type="image/svg"
-          sizes="128x128"
-          href="/woozint_logo.svg"
-        ></link>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/woozint_logo.svg" />
       </head>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <body className="h-[100vh]">{children}</body>
-      </ThemeProvider>
+
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
