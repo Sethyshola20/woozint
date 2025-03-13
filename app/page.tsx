@@ -18,37 +18,15 @@ import { FormDataType, formSchema } from "./zodValidation";
 import { Card, CardContent } from "./components/ui/card";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { formAction } from "./_action";
+import { formAction, PersonWithComment } from "./_action";
 import { ModeToggle, SearchTypeToggle } from "@components/ui/toggle-theme";
 import { useState } from "react";
 
 export default function Home() {
   const [searchByEmail, setSearchByEmail] = useState(true);
-  const [person, setPerson] = useState<
-    | {
-        email: string;
-        name: string;
-        id: string;
-        geolocCreateMail: string;
-        dateCreateMail: Date;
-        passwordMzailleaked: string;
-        x: string;
-        facebook: string;
-        linkedin: string;
-        instagram: string;
-        commentgooggle: [
-          {
-            id: string;
-            comment: string;
-            titre: string;
-            description: string;
-            entrepriseName: string;
-            personId: string;
-          },
-        ];
-      }
-    | undefined
-  >(undefined);
+  const [person, setPerson] = useState<PersonWithComment | undefined>(
+    undefined
+  );
   const { theme } = useTheme();
 
   async function sendData(data: FormDataType) {
@@ -164,7 +142,7 @@ export default function Home() {
                 <li key={comment.id}>
                   <h2>{comment.titre}</h2>
                   <p>{comment.description}</p>
-                  <p>{comment.entrepriseName}</p>
+                  <p>{comment.enterpriseName}</p>
                 </li>
               ))}
             </ul>

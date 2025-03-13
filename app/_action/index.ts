@@ -1,9 +1,14 @@
 "use server"
 
+import { Comment, Person } from "@prisma/client";
 import { FormDataType } from "../zodValidation";
 import { prisma } from "@lib/prisma";
 
-export async function formAction(data: FormDataType) {
+
+export type PersonWithComment = Person & {
+    commentgooggle: Comment[]
+}
+export async function formAction(data: FormDataType): Promise<PersonWithComment | undefined> {
     try {
         if (!data.email && !data.prenom && !data.nom) {
             throw new Error("Veuillez remplir au moins un champ");
