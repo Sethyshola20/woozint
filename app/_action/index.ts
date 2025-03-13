@@ -12,6 +12,9 @@ export async function formAction(data: FormDataType) {
             const user = await prisma.person.findUnique({
                 where: {
                     email: data.email
+                },
+                include: {
+                    commentgooggle: true
                 }
             });
             if (user) {
@@ -31,6 +34,8 @@ export async function formAction(data: FormDataType) {
                             email: data.prenom
                         }
                     ]
+                }, include: {
+                    commentgooggle: true
                 }
             });
             if (user) {

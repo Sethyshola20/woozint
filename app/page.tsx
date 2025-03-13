@@ -36,6 +36,16 @@ export default function Home() {
         facebook: string;
         linkedin: string;
         instagram: string;
+        commentgooggle: [
+          {
+            id: string;
+            comment: string;
+            titre: string;
+            description: string;
+            entrepriseName: string;
+            personId: string;
+          },
+        ];
       }
     | undefined
   >(undefined);
@@ -44,6 +54,7 @@ export default function Home() {
   async function sendData(data: FormDataType) {
     try {
       const person = await formAction(data);
+      setPerson(person);
     } catch (error: unknown) {
       toast({
         title: "Erreur",
@@ -148,6 +159,15 @@ export default function Home() {
             <p>{person.facebook}</p>
             <p>{person.linkedin}</p>
             <p>{person.instagram}</p>
+            <ul>
+              {person.commentgooggle.map((comment) => (
+                <li key={comment.id}>
+                  <h2>{comment.titre}</h2>
+                  <p>{comment.description}</p>
+                  <p>{comment.entrepriseName}</p>
+                </li>
+              ))}
+            </ul>
           </CardContent>
         </Card>
       )}
