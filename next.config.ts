@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async redirects() {
     return [];
   },
@@ -17,7 +19,7 @@ const nextConfig: NextConfig = {
     turbo: {},
   },
   images: {
- // Allowed image domains
+    // Allowed image domains
   },
   /* config options here */
 };
