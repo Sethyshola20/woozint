@@ -16,6 +16,7 @@ import { toast } from "@components/hooks/use-toast";
 import { useTheme } from "next-themes";
 import { LoginFormData, loginFormSchema } from "zodValidation";
 import Link from "next/link";
+import { loginAction } from "_action";
 
 export default function LoginPage() {
   const { theme } = useTheme();
@@ -31,7 +32,14 @@ export default function LoginPage() {
   async function onSubmit(values: LoginFormData) {
     try {
       // Add your login logic here
-      console.log(values);
+      const resp = await loginAction(values);
+      if (!resp.success) {
+        toast({
+          variant: "destructive",
+          title: "Erreur",
+          description: "Impossible de se connecter",
+        });
+      }
       toast({
         title: "Succès",
         description: "Connexion réussie",

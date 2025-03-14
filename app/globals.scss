@@ -120,3 +120,30 @@
 .animate-fade-in {
   animation: fadeIn 1s ease-out forwards;
 }
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-size: 100px 100px;
+    background-image: linear-gradient(to right, rgba(var(--foreground), 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(var(--foreground), 0.1) 1px, transparent 1px);
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 6s linear infinite;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -34,7 +34,14 @@ export default function RegisterPage() {
 
   async function onSubmit(values: RegisterFormData) {
     try {
-      await registerAction(values);
+      const resp = await registerAction(values);
+      if (!resp.success) {
+        toast({
+          variant: "destructive",
+          title: "Erreur",
+          description: "Impossible de créer un compte",
+        });
+      }
       toast({
         title: "Succès",
         description: "Compte créé avec succès",
