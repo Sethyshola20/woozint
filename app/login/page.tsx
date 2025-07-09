@@ -16,10 +16,12 @@ import { toast } from "@components/hooks/use-toast";
 import { useTheme } from "next-themes";
 import { LoginFormData, loginFormSchema } from "zodValidation";
 import Link from "next/link";
-import { loginAction } from "_action";
+import { loginUseCase } from "./use_case";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const { theme } = useTheme();
+const router = useRouter()
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -32,18 +34,8 @@ export default function LoginPage() {
   async function onSubmit(values: LoginFormData) {
     try {
       // Add your login logic here
-      const resp = await loginAction(values);
-      if (!resp.success) {
-        toast({
-          variant: "destructive",
-          title: "Erreur",
-          description: "Impossible de se connecter",
-        });
-      }
-      toast({
-        title: "Succès",
-        description: "Connexion réussie",
-      });
+      await loginUseCase(values);
+        router.push("/dashboard")
     } catch (error: unknown) {
       toast({
         variant: "destructive",

@@ -18,6 +18,7 @@ import { RegisterFormData, registerFormSchema } from "zodValidation";
 import { registerAction } from "../_action";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { registerUseCase } from "./use_case";
 
 export default function RegisterPage() {
   const { theme } = useTheme();
@@ -34,19 +35,8 @@ export default function RegisterPage() {
 
   async function onSubmit(values: RegisterFormData) {
     try {
-      const resp = await registerAction(values);
-      if (!resp.success) {
-        toast({
-          variant: "destructive",
-          title: "Erreur",
-          description: "Impossible de créer un compte",
-        });
-      }
-      toast({
-        title: "Succès",
-        description: "Compte créé avec succès",
-      });
-      router.push("/dashboard");
+       await registerUseCase(values);
+       router.push("/dashboard")
     } catch (error) {
       toast({
         variant: "destructive",

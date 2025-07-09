@@ -1,9 +1,10 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { LogoutButton } from "../../../../components/logout-button";
+import { createClient } from "../../../../utils/supabase/server";
+import { UserResponse } from "@supabase/supabase-js";
 
-export function ProfileTab() {
+export function ProfileTab({user}:{user:UserResponse}) {
+  
   return (
     <Card>
       <CardHeader>
@@ -13,7 +14,7 @@ export function ProfileTab() {
         <div className="grid gap-4">
           <div className="space-y-2">
             <p className="text-sm font-medium">Email</p>
-            <p className="text-sm text-muted-foreground">user@example.com</p>
+            <p className="text-sm text-muted-foreground">{user.data.user?.email}</p>
           </div>
           <div className="space-y-2">
             <p className="text-sm font-medium">Rôle</p>

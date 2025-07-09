@@ -1,11 +1,11 @@
-"use client";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
-import { Card } from "@components/ui/card";
 import { SearchTab } from "./_components/search-tab";
 import { ProfileTab } from "./_components/profile-tab";
+import { createClient } from "../../../utils/supabase/server";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient()
+  const user = await supabase.auth.getUser()
   return (
     <div className="container py-10 w-full pr-6 pl-6 flex items-center">
       <Tabs defaultValue="search" className="space-y-4 w-full">
@@ -19,7 +19,7 @@ export default function DashboardPage() {
         </TabsContent>
 
         <TabsContent value="profile" className="space-y-4">
-          <ProfileTab />
+          <ProfileTab user={user}/>
         </TabsContent>
       </Tabs>
     </div>

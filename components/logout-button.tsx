@@ -14,14 +14,15 @@ import {
 import { Button } from "@components/ui/button";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { createClient } from "../utils/supabase/client";
 
 export function LogoutButton() {
   const { theme } = useTheme();
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    const supabase = createClient()
+     supabase.auth.signOut()
   };
 
   return (

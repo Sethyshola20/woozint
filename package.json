@@ -28,6 +28,7 @@
     "@radix-ui/react-toast": "^1.2.6",
     "@react-email/render": "^1.0.5",
     "@sendgrid/mail": "^8.1.4",
+    "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.1",
     "@tailwindcss/postcss": "^4.0.9",
     "autoprefixer": "^10.4.20",
