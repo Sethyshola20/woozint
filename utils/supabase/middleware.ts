@@ -7,7 +7,6 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT MOVE auth.getUser() further down
   const { data: { user } } = await supabase.auth.getUser()
-console.log(user)
   // ✅ Configure allowed public routes
   const publicPaths = [
     '/',
