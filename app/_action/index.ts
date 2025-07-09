@@ -61,7 +61,20 @@ export async function formAction(data: FormDataType): Promise<PersonWithComment 
     }
 }
 
-
+export async function loginUseCase(data: LoginFormData) {
+    try {
+        const supabase = createClient();
+        loginFormSchema.parse(data)
+        const { data:res, error } = await supabase.auth.signInWithPassword({
+            email: data.email,
+            password: data.password,
+        });
+        if (error) throw error;
+            return { data: res, error: null };
+        } catch (error) {
+            return { data: null, error: error instanceof z.ZodError ? error.errors : error };
+        }
+}
 
 export async function registerAction(data: RegisterFormData) {
     try {
