@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { SearchTypeToggle } from "@components/ui/toggle-theme";
-import { SearchForm } from "../../../../components/search-form";
+import { SearchByName, SearchEmailForm } from "../../../../components/search-form";
 import { PersonWithComment } from "_action";
 import { SearchResults } from "../../../../components/search-results";
 
@@ -21,7 +21,7 @@ export function SearchTab() {
           <SearchTypeToggle setSearchByEmail={setSearchByEmail} />
         </CardHeader>
         <CardContent className="p-6">
-          <SearchForm searchByEmail={searchByEmail} setPerson={setPerson} />
+          {searchByEmail ? <SearchEmailForm setPerson={setPerson}/> : <SearchByName setPerson={setPerson}/>}
         </CardContent>
       </Card>
 

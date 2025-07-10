@@ -1,7 +1,7 @@
 "use server"
 
 import { Comment, Person } from "@prisma/client";
-import { FormDataType, LoginFormData, loginFormSchema } from "../zodValidation";
+import { FormDataType, LoginFormData, loginFormSchema, searchType } from "../zodValidation";
 import { prisma } from "@lib/prisma";
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
@@ -50,9 +50,36 @@ export async function formAction(data: FormDataType): Promise<PersonWithComment 
                 }
             });
             if (user) {
-                console.log(user);
                 return user;
             }
+            throw new Error("Aucun utilisateur trouvé");
+        }
+
+    } catch (error: unknown) {
+        throw new Error(error instanceof Error ? error.message : "Une erreur est survenue");
+    }
+}
+
+export async function nameAction(data:searchType){
+    try {
+    
+        if (data.prenom && data.nom) {
+            const users = await prisma.person.findMany()    
+            const userInArray = users.find(user=> user.name.split(" ")[0].toLocaleLowerCase() === data.prenom.toLocaleLowerCase() && user.name.split(" ")[1].toLocaleLowerCase() === data.nom.toLocaleLowerCase())
+            
+            if (userInArray) {
+                const user = await prisma.person.findUnique({
+                    where: {
+                        id: userInArray.id,
+                    },
+                    include: {
+                        commentgooggle: true // Include related comments
+                    }
+                });
+                return user
+            }
+            
+
             throw new Error("Aucun utilisateur trouvé");
         }
 

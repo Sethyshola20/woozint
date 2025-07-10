@@ -7,6 +7,12 @@ export const formSchema = z.object({
     email: z.string().email(),
 });
 
+export const searchNameSchema = z.object({
+   prenom: z.string(),
+    nom: z.string(),
+})
+
+export type searchType =  z.infer<typeof searchNameSchema>
 export type FormDataType = z.infer<typeof formSchema>;
 
 
