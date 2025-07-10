@@ -7,7 +7,7 @@ export function SearchResults({ person }: { person: PersonWithComment }) {
       <div className="grid gap-2">
         <p>{person.email}</p>
         <p>{person.geolocCreateMail}</p>
-        <p>{person.passwordMzailleaked}</p>
+        <p>Leak ?: {person.passwordMzailleaked}</p>
         <p>{person.x}</p>
         <p>{person.facebook}</p>
         <p>{person.linkedin}</p>

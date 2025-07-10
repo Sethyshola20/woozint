@@ -2,14 +2,16 @@
 
 import { Comment, Person } from "@prisma/client";
 import { FormDataType, LoginFormData, loginFormSchema, searchType } from "../zodValidation";
-import { prisma } from "@lib/prisma";
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { RegisterFormData } from "../zodValidation";
-import { createClient } from "../../utils/supabase/client";
 import { z } from "zod";
+import fs from "fs";
+import path from "path";
 
+const seedFilePath = path.join(process.cwd(), "data", "seed.json");
+const seedData = JSON.parse(fs.readFileSync(seedFilePath, "utf-8"));
 
 export type PersonWithComment = Person & {
     commentgooggle: Comment[]
@@ -20,35 +22,14 @@ export async function formAction(data: FormDataType): Promise<PersonWithComment 
             throw new Error("Veuillez remplir au moins un champ");
         }
         if (data.email) {
-            const user = await prisma.person.findUnique({
-                where: {
-                    email: data.email
-                },
-                include: {
-                    commentgooggle: true
-                }
-            });
+            const user = seedData.find((user: any) => user.email === data.email);
             if (user) {
-                console.log(user);
                 return user;
             }
             throw new Error("Aucun utilisateur trouvé");
         }
         if (data.prenom && data.nom) {
-            const user = await prisma.person.findFirst({
-                where: {
-                    AND: [
-                        {
-                            name: data.nom
-                        },
-                        {
-                            email: data.prenom
-                        }
-                    ]
-                }, include: {
-                    commentgooggle: true
-                }
-            });
+            const user = seedData.find((user: any) => user.name.toLowerCase() === `${data.prenom.toLowerCase()} ${data.nom.toLowerCase()}`);
             if (user) {
                 return user;
             }
@@ -64,18 +45,9 @@ export async function nameAction(data:searchType){
     try {
     
         if (data.prenom && data.nom) {
-            const users = await prisma.person.findMany()    
-            const userInArray = users.find(user=> user.name.split(" ")[0].toLocaleLowerCase() === data.prenom.toLocaleLowerCase() && user.name.split(" ")[1].toLocaleLowerCase() === data.nom.toLocaleLowerCase())
+            const user = seedData.find((user: any) => user.name.toLowerCase() === `${data.prenom.toLowerCase()} ${data.nom.toLowerCase()}`);
             
-            if (userInArray) {
-                const user = await prisma.person.findUnique({
-                    where: {
-                        id: userInArray.id,
-                    },
-                    include: {
-                        commentgooggle: true // Include related comments
-                    }
-                });
+            if (user) {
                 return user
             }
             
@@ -90,55 +62,39 @@ export async function nameAction(data:searchType){
 
 export async function loginUseCase(data: LoginFormData) {
     try {
-        const supabase = createClient();
         loginFormSchema.parse(data)
-        const { data:res, error } = await supabase.auth.signInWithPassword({
-            email: data.email,
-            password: data.password,
-        });
-        if (error) throw error;
-            return { data: res, error: null };
-        } catch (error) {
-            return { data: null, error: error instanceof z.ZodError ? error.errors : error };
+        const user = seedData.find((user: any) => user.email === data.email);
+        if (!user) {
+            throw new Error("Aucun utilisateur trouvé");
         }
+        // As we don't have passwords in seed.json, we'll consider the login successful if the email exists.
+        // You might want to implement a more secure check here if needed.
+        return { data: { user }, error: null };
+    } catch (error) {
+        return { data: null, error: error instanceof z.ZodError ? error.errors : error };
+    }
 }
 
 export async function registerAction(data: RegisterFormData) {
     try {
-        // Check if user already exists
-        const existingUser = await prisma.user.findUnique({
-            where: {
-                email: data.email,
-            },
-        });
+        const existingUser = seedData.find((user: any) => user.email === data.email);
 
         if (existingUser) {
             throw new Error("Un utilisateur avec cet email existe déjà");
         }
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(data.password, 10);
+        // This is a mock registration. We are not writing to the seed.json file.
+        const newUser = {
+            id: Math.random().toString(36).substring(2, 15),
+            email: data.email,
+            role: "USER",
+        };
 
-        // Create new user
-        const user = await prisma.user.create({
-            data: {
-                email: data.email,
-                password: hashedPassword,
-                role: "USER", // Default role
-            },
-            select: {
-                id: true,
-                email: true,
-                role: true,
-            },
-        });
-
-        // Generate JWT token
         const token = jwt.sign(
             {
-                userId: user.id,
-                email: user.email,
-                role: user.role,
+                userId: newUser.id,
+                email: newUser.email,
+                role: newUser.role,
             },
             process.env.JWT_SECRET || 'your-secret-key',
             { expiresIn: '7d' }
@@ -155,9 +111,9 @@ export async function registerAction(data: RegisterFormData) {
         return {
             success: true,
             user: {
-                id: user.id,
-                email: user.email,
-                role: user.role,
+                id: newUser.id,
+                email: newUser.email,
+                role: newUser.role,
             },
         };
     } catch (error: unknown) {
